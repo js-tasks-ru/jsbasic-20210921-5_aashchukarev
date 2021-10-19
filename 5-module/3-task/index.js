@@ -10,27 +10,24 @@ function initCarousel() {
   let carouselInner = carousel.querySelector('.carousel__inner');
   let lengthCarouselInner = carouselInner.querySelectorAll('.carousel__slide').length;
   
-  //ширина элементы в котором отображаются слайды - шаг 
-  let step = carouselInner.offsetWidth;
-  
   //первоначальная позиция
   let position = 1;
   arrowLeft.style.display = 'none';
-  arrowRight.style.display = '';
 
   carousel.onclick = function(event) {
     let target = event.target;
+
+    //ширина элементы в котором отображаются слайды - шаг
+    let step = carouselInner.offsetWidth;
     
-    if( target == arrowRight.querySelector('img') ) {
+    if( target.closest('.carousel__arrow_right') ) {
+      carouselInner.style.transform = `translateX(-${step*position}px)`;
       position += 1;
-      position = Math.min(position, lengthCarouselInner);
-      carouselInner.style.transform += `translateX(-${step}px)`;
     }
     
-    if( target == arrowLeft.querySelector('img') ) {
+    if( target.closest('.carousel__arrow_left') ) {
+      carouselInner.style.transform = `translateX(-${step*(position-2)}px)`;
       position -= 1;
-      position = Math.max(position, 1);
-      carouselInner.style.transform += `translateX(${step}px)`;
     }
 
     //переключатель отображения стрелок

@@ -38,7 +38,6 @@ export default class ProductCard {
   //функция для обработчика генерирующая пользовательское событие
   pluse = (event) => {
     let target = event.target;
-    if( target.tagName !== "IMG" ) return;
     const myEvent = new CustomEvent('product-add', {
       detail: this.product.id, 
       bubbles: true
