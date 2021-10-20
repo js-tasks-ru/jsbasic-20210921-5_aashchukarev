@@ -1,8 +1,8 @@
-function initCarousel() {
+export default function(element) {
   //Получаем элемент контейнер-карусель
-  let carousel = document.querySelector('.carousel');
-
-  //ссылки на струлки
+  let carousel = element;
+  
+  //ссылки на стрелки
   let arrowRight = carousel.querySelector('.carousel__arrow_right');
   let arrowLeft = carousel.querySelector('.carousel__arrow_left');
   
@@ -48,5 +48,5 @@ function initCarousel() {
     }
 
   };
-
-}
+  
+};
