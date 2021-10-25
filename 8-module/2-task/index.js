@@ -23,20 +23,25 @@ export default class ProductGrid {
   updateFilter(filters) {
     Object.assign(this.filters, filters); 
     let productsFilter = this.products;
-    
+
     for( let property in this.filters ) {
+
       if( property == 'noNuts' && this.filters[property] ) {
         productsFilter = productsFilter.filter( item => ( item['nuts'] == false || !item.nuts ) );
       }
+
       if( property == 'vegeterianOnly' && this.filters[property] ) {
         productsFilter = productsFilter.filter( item => item['vegeterian'] );
       }
+
       if( property == 'maxSpiciness' ) {
-        productsFilter = productsFilter.filter( item => item['spiciness'] == this.filters[property] );
+        productsFilter = productsFilter.filter( item => item['spiciness'] <= this.filters[property] );
       }
+
       if( property == 'category' && this.filters[property] != '' ) {
         productsFilter = productsFilter.filter( item => item['category'] == this.filters[property] );
       }
+      
     }
     this.productInner.innerHTML = '';
     this.renderFilterProduct(productsFilter);
