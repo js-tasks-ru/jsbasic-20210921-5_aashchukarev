@@ -31,7 +31,7 @@ export default class Cart {
       product.remove();
       let infoPrice = this.fromBody.querySelector('.cart-buttons__info-price');
       this.cartItems.splice(index, 1);
-      infoPrice.innerHTML = `€${this.getTotalPrice()}`;
+      infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
       if( this.cartItems.isEmpty ) this.modalWindow.close();
     } else {
       findProduct.count += amount;
@@ -153,7 +153,7 @@ export default class Cart {
 
     productPrice.innerHTML = `€${(cartItem.count * cartItem.product.price).toFixed(2)}`;
     
-    infoPrice.innerHTML = `€${this.getTotalPrice()}`;
+    infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
     
   }
 
@@ -189,7 +189,6 @@ export default class Cart {
       }
 
       else alert(`HTTP - Error: ${response.status}`);
-      //return response.text();
     });
     
   };
