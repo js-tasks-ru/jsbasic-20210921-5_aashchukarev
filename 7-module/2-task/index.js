@@ -17,7 +17,7 @@ export default class Modal {
 
     this._elem = modalWindow;
     let button = this._elem.querySelector('.modal__close');
-    button.addEventListener('click', this.mclose);
+    button.addEventListener('click', (event) => this.mclose(event));
     document.addEventListener('keydown', this.kclose);
   }
 
@@ -36,7 +36,7 @@ export default class Modal {
     modalBody.append(node);
   }
 
-  mclose = (event) => {
+  mclose(event) {
     let target = event.target;
     if( target ) this.close();
     else return;
@@ -44,8 +44,8 @@ export default class Modal {
   
   close() {
     document.body.classList.remove('is-modal-open');
-    document.body.remove(this._elem);
     document.removeEventListener('keydown', this.kclose);
+    this._elem.remove();
   }
 
   kclose = (event) => {
