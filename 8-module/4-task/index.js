@@ -32,7 +32,7 @@ export default class Cart {
       let infoPrice = this.fromBody.querySelector('.cart-buttons__info-price');
       this.cartItems.splice(index, 1);
       infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
-      if( this.cartItems.isEmpty ) this.modalWindow.close();
+      if( this.isEmpty() ) this.modalWindow.close();
     } else {
       findProduct.count += amount;
       console.log(findProduct);
