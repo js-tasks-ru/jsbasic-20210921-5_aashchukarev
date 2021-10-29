@@ -54,7 +54,7 @@ export default class StepSlider {
     }
 
     //Выясняем к какому шагу ближе находится клик мыши
-    let scrol = newLeft * this.quantity; 
+    //let scrol = newLeft * 100; 
     this.value = Math.round(newLeft * this.quantity);
     this.sliderValue = this.stepSlider.querySelector('.slider__value');
     this.sliderValue.textContent = this.value;
@@ -63,8 +63,8 @@ export default class StepSlider {
     this.sliderSteps.children[this.value].classList.add('slider__step-active');
     
     //устанавливаем ползунок и полоску в соответствии с высчитанным процентом
-    this.thumb.style.left = `${scrol * this.percents}%`;
-    this.progress.style.width = `${scrol * this.percents}%`;
+    this.thumb.style.left = `${newLeft * 100}%`;
+    this.progress.style.width = `${newLeft * 100}%`;
   }
 
   onPointerUp = (event) => {
