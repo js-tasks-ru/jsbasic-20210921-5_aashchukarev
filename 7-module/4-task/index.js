@@ -6,7 +6,6 @@ export default class StepSlider {
     this.value = value;
     this.stride = Math.round(100 / this.steps);
     this.quantity = this.steps - 1;
-    this.percents = Math.round(100 / this.quantity);
     
     //Создаем слайдер и указываем первоначальные параметры ползунка
     this.stepSlider = createElement(`<div class="slider">
@@ -24,24 +23,32 @@ export default class StepSlider {
     //метод перемещения ползунка по клику
     this.thumb = this.stepSlider.querySelector('.slider__thumb');
     this.progress = this.stepSlider.querySelector('.slider__progress');
+    this.sliderValue = this.stepSlider.querySelector('.slider__value');
     this.thumb.ondragstart = function() {
       return false;
     };
     this.thumb.style.touchAction = 'none';
     this.thumb.onpointerdown = (event) => {
-      console.log(this.thumb)
-      this.thumb.setPointerCapture(event.pointerId);
-      this.sliderSteps.classList.add('slider_dragging');
+      event.preventDefault();
+      this.stepSlider.classList.add('slider_dragging');
       this.thumb.addEventListener('pointermove', this.onPointerMove);
       this.thumb.addEventListener('pointerup', this.onPointerUp);
+    };
+    this.stepSlider.onclick = (event) => {
+      let newLeft = (event.clientX - this.sliderSteps.getBoundingClientRect().left) / this.sliderSteps.offsetWidth;
+      this.setValue(Math.round(this.quantity * newLeft));
+      let myEvent = new CustomEvent('slider-change', {
+        detail: this.value,
+        bubbles: true
+      });
+      this.stepSlider.dispatchEvent(myEvent);
+
     };
   }
 
   onPointerMove = (event) => {
     event.preventDefault(); // предотвратить запуск выделения (действие браузера)
     this.thumb.style.touchAction = 'none';
-    //this.sliderSteps.classList.add('slider_dragging');
-    //this.thumb.setPointerCapture(event.pointerId);
     let newLeft = (event.clientX - this.sliderSteps.getBoundingClientRect().left) / this.sliderSteps.offsetWidth;
       
     // курсор вышел из слайдера => оставить бегунок в его границах.
@@ -54,9 +61,7 @@ export default class StepSlider {
     }
 
     //Выясняем к какому шагу ближе находится клик мыши
-    //let scrol = newLeft * 100; 
     this.value = Math.round(newLeft * this.quantity);
-    this.sliderValue = this.stepSlider.querySelector('.slider__value');
     this.sliderValue.textContent = this.value;
     
     //подсвечиваем высчитанный шаг
@@ -68,12 +73,11 @@ export default class StepSlider {
   }
 
   onPointerUp = (event) => {
-    event.preventDefault();
     this.stepSlider.classList.remove('slider_dragging');
     
     //устанавливаем ползунок и полоску в соответствии с высчитанным процентом
-    this.thumb.style.left = `${this.value * this.percents}%`;
-    this.progress.style.width = `${this.value * this.percents}%`;
+    this.thumb.style.left = `${(this.value / this.quantity) * 100}%`;
+    this.progress.style.width = `${(this.value / this.quantity) * 100}%`;
 
     //генерим пользовательское событие
     let myEvent = new CustomEvent('slider-change', {
@@ -85,6 +89,23 @@ export default class StepSlider {
     this.thumb.removeEventListener('pointermove', this.onPointerMove);
     this.thumb.removeEventListener('pointerup', this.onPointerUp);
     
+  }
+
+  setValue(value) {
+    this.value = value;
+
+    let valuePercents = (value / this.quantity) * 100;
+
+    this.thumb.style.left = `${valuePercents}%`;
+    this.progress.style.width = `${valuePercents}%`;
+
+    this.sliderValue.textContent = value;
+
+    for( let child of this.sliderSteps.children ) {
+      if( child.classList.contains('slider__step-active') ) child.classList.remove('slider__step-active');
+    }
+
+    this.sliderSteps.children[value].classList.add('slider__step-active');
   }
 
   get elem() {
