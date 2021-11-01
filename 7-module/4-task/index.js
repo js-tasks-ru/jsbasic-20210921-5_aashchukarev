@@ -4,15 +4,14 @@ export default class StepSlider {
   constructor({ steps, value = 0 }) {
     this.steps = steps;
     this.value = value;
-    this.stride = Math.round(100 / this.steps);
     this.quantity = this.steps - 1;
     
     //Создаем слайдер и указываем первоначальные параметры ползунка
     this.stepSlider = createElement(`<div class="slider">
-      <div class="slider__thumb" style="left: ${this.value * this.stride}%;">
+      <div class="slider__thumb" style="left: ${(this.value / this.quantity) * 100}%;">
         <span class="slider__value">${this.value}</span>
       </div>
-      <div class="slider__progress" style="width: ${this.value * this.stride}%;"></div>
+      <div class="slider__progress" style="width: ${(this.value / this.quantity) * 100}%;"></div>
       <div class="slider__steps">${'<span></span>'.repeat(this.steps)}</div>
     </div>`);
     

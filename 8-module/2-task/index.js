@@ -38,7 +38,7 @@ export default class ProductGrid {
         productsFilter = productsFilter.filter( item => item['spiciness'] <= this.filters[property] );
       }
 
-      if( property == 'category' && this.filters[property] != '' ) {
+      if( property == 'category' && this.filters[property] != '' && this.filters[property] != 'All') {
         productsFilter = productsFilter.filter( item => item['category'] == this.filters[property] );
       }
       
